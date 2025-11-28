@@ -197,6 +197,7 @@ def main():
     # Parsing command line arguments
     parser = argparse.ArgumentParser(description="Fine-tune a language model with specified parameters.")
     parser.add_argument('--dataset', type=str, default="HuggingFaceH4/ultrafeedback_binarized", help="Dataset to load.")
+    parser.add_argument('--fraction', type=float, default=1, help="Dataset fraction to use.")
     parser.add_argument('--base-model-name', type=str, default="unsloth/Qwen3-8B-unsloth-bnb-4bit", help="Base model name.")
     parser.add_argument('--checkpoint-path', type=str, default="./output/checkpoints", help="Path to the checkpoint to save.")
     parser.add_argument('--output-model-name', type=str, default="./output/finetuned_model", help="Output directory for the trained model.")
@@ -219,7 +220,7 @@ def main():
     )
 
     raw_datasets = get_datasets(
-        {args.dataset : 0.2},
+        {args.dataset : args.fraction},
         splits = ["train_prefs", "test_prefs"],
     )
     column_names = list(raw_datasets["train"].features)
