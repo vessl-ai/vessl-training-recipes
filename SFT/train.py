@@ -149,7 +149,8 @@ def main():
         splits = ["train", "test"],
     )
 
-    converted_dataset = [convert_to_conversation(sample) for sample in raw_datasets]
+    converted_dataset_train = [convert_to_conversation(sample) for sample in raw_datasets["train"]]
+    converted_dataset_test = [convert_to_conversation(sample) for sample in raw_datasets["test"]]
 
     # Loading the base model and tokenizer
     base_model, tokenizer = FastVisionModel.from_pretrained(
@@ -202,7 +203,8 @@ def main():
         model=model,
         tokenizer=tokenizer,
         data_collator=UnslothVisionDataCollator(model, tokenizer),
-        train_dataset=converted_dataset,
+        train_dataset=converted_dataset_train,
+        eval_dataset=converted_dataset_test,
         args=training_arguments,
         callbacks=[
             VesslCallback()
