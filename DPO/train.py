@@ -219,7 +219,7 @@ def main():
     )
 
     raw_datasets = get_datasets(
-        {args.dataset : 1},
+        {args.dataset : 0.2},
         splits = ["train_prefs", "test_prefs"],
     )
     column_names = list(raw_datasets["train"].features)
