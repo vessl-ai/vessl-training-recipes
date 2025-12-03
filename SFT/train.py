@@ -168,7 +168,6 @@ def main():
         
         r=args.lora_rank,
         lora_alpha=args.lora_rank,
-        # target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
         lora_dropout=0,  # Supports any, but = 0 is optimized
         bias="none",     # Supports any, but = "none" is optimized
         use_gradient_checkpointing=True,
@@ -188,7 +187,7 @@ def main():
         gradient_checkpointing=True,                       # Use gradient checkpointing to save memory
         fp16=not torch.cuda.is_bf16_supported(),           # Whether to use 16-bit (mixed) precision training
         bf16=torch.cuda.is_bf16_supported(),               # Whether to use bfloat16 precision training
-        logging_steps=1,                                   # Log every X updates steps
+        logging_steps=25,                                  # Log every X updates steps
         save_steps=50,                                     # Save checkpoint every X updates steps
         save_strategy="steps",                             # The checkpoint saving strategy to adopt during training
         remove_unused_columns=False,
