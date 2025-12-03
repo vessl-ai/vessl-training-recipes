@@ -1,0 +1,28 @@
+name: qwen-3-vl-8b-dpo-finetuning
+tags:
+  - finetune
+  - dpo
+import:
+  /code/:
+    git:
+      url: github.com/vessl-ai/vessl-training-recipes.git
+      ref: main
+export:
+  /artifacts/: volume://vessl-storage
+resources:
+  cluster: vessl-kr-a100-80g-sxm
+  preset: gpu-a100-80g-small
+image: quay.io/vessl-ai/torch:2.3.1-cuda12.1-r5
+run:
+  - command: |-
+      pip install trl unsloth packaging==24.1
+      python train.py \
+        --base-model-name $MODEL_NAME \
+        --checkpoint-path /artifacts/checkpoints \
+        --output-model-name /artifacts/adapter \
+        --train-epochs 1 \
+        --lora-rank 8 \
+        --fraction 0.5
+    workdir: /code/DPO
+env:
+  MODEL_NAME: unsloth/Qwen3-8B-unsloth-bnb-4bit
