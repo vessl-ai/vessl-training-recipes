@@ -180,6 +180,7 @@ def main():
         num_mini_batches=1,
         gradient_accumulation_steps=1,
         logging_steps=25,
+        output_dir=args.checkpoint_path,
     )
     ppo_trainer=PPOTrainer(
         args=config,
@@ -196,6 +197,11 @@ def main():
         ],
     )
     ppo_trainer.train()
+
+    # Save the model
+    model.save_pretrained(args.output_model_name)
+    tokenizer.save_pretrained(args.output_model_name)
+    model.config.use_cache = True
 
 
 if __name__ == "__main__":
