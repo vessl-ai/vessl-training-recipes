@@ -117,7 +117,7 @@ def main():
     parser = argparse.ArgumentParser(description="Fine-tune a language model with specified parameters.")
     parser.add_argument('--dataset', type=str, default="HuggingFaceH4/ultrafeedback_binarized", help="Dataset to load.")
     parser.add_argument('--fraction', type=float, default=1, help="Dataset fraction to use.")
-    parser.add_argument('--base-model-name', type=str, default="unsloth/Qwen3-4B-unsloth-bnb-4bit", help="Base model name.")
+    parser.add_argument('--base-model-name', type=str, default="unsloth/Qwen3-4B-Instruct-2507-bnb-4bit", help="Base model name.")
     parser.add_argument('--reward-model-name', type=str, default="Skywork/Skywork-Reward-V2-Qwen3-0.6B", help="Reward model name.")
     parser.add_argument('--checkpoint-path', type=str, default="./output/checkpoints", help="Path to the checkpoint to save.")
     parser.add_argument('--output-model-name', type=str, default="./output/finetuned_model", help="Output directory for the trained model.")
@@ -161,7 +161,7 @@ def main():
     model = AutoModelForCausalLM.from_pretrained(
         args.base_model_name,
         device_map="auto",
-        max_length=512,
+        max_length=args.max_seq_length,
         dtype=torch.bfloat16,
     )
 
