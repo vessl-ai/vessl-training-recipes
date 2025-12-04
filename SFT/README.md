@@ -1,6 +1,6 @@
 # Supervised Fine-Tuning (SFT) Example
 
-This repository provides a clean and minimal, example of **Supervised Fine-Tuning (SFT)** for Large Language Models using the HuggingFace🤗 ecosystem.
+This repository provides a clean and minimal example of **Supervised Fine-Tuning (SFT)** for Large Language Models using the HuggingFace🤗 ecosystem.
 It is designed for practitioners who want to quickly prototype, benchmark, and extend SFT pipelines with modern Transformer models.
 
 ## How to Run it Locally
