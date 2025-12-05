@@ -1,0 +1,30 @@
+name: sft-finetuning
+tags:
+  - finetune
+  - qlora
+import:
+  /code/:
+    git:
+      url: github.com/vessl-ai/vessl-training-recipes.git
+      ref: main
+export:
+  /artifacts/: volume://vessl-storage
+resources:
+  cluster: vessl-kr-a100-80g-sxm
+  preset: gpu-a100-80g-small
+image: quay.io/vessl-ai/torch:2.8.0-cuda12.8-r1
+run:
+  - command: |-
+      pip install trl unsloth packaging==24.1
+      python train.py \
+        --base-model-name $MODEL_NAME \
+        --dataset $DATASET_NAME \
+        --fraction 0.05 \
+        --checkpoint-path /artifacts/checkpoints \
+        --output-model-name /artifacts/adapter \
+        --train-epochs 1 \
+        --lora-rank 8
+    workdir: /code/SFT
+env:
+  MODEL_NAME: unsloth/Qwen3-VL-8B-Instruct-unsloth-bnb-4bit
+  DATASET_NAME: unsloth/LaTeX_OCR
