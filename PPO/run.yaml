@@ -1,0 +1,33 @@
+name: ppo-finetuning
+tags:
+  - finetune
+  - ppo
+import:
+  /code/:
+    git:
+      url: github.com/vessl-ai/vessl-training-recipes.git
+      ref: main
+export:
+  /artifacts/: volume://vessl-storage
+resources:
+  cluster: vessl-kr-a100-80g-sxm
+  preset: gpu-a100-80g-small
+image: quay.io/vessl-ai/torch:2.8.0-cuda12.8-r1
+run:
+  - command: |-
+      pip install trl peft datasets packaging==24.1
+      python train.py \
+        --base-model-name $BASE_MODEL_NAME \
+        --reward-model-name $REWARD_MODEL_NAME \
+        --dataset $DATASET_NAME \
+        --fraction 1 \
+        --max-seq-length 512 \
+        --checkpoint-path /artifacts/checkpoints \
+        --output-model-name /artifacts/adapter \
+        --train-epochs 1 \
+        --lora-rank 8
+    workdir: /code/PPO
+env:
+  BASE_MODEL_NAME: Qwen/Qwen3-4B-Instruct-2507
+  DATASET_NAME: HuggingFaceH4/ultrafeedback_binarized
+  REWARD_MODEL_NAME: Skywork/Skywork-Reward-V2-Qwen3-0.6B
